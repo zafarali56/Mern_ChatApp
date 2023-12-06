@@ -6,7 +6,7 @@ export default function Register() {
 
   return (
     <div className="bg-red-50 h-screen flex items-center">
-      <form className="w-64 mx-auto">
+      <form className="w-64 mx-auto mb-12">
         <h1 className="">Login</h1>
 
         <input
