@@ -1,23 +1,22 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "./UserContext";
 
 export default function Register() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setEmail: setLoggedInEmail, setId } = useContext(UserContext);
 
   async function register(ev) {
     ev.preventDefault();
-    try {
-      const response = await axios.post("/register", {
-        fullName,
-        email,
-        password,
-      });
-      console.log("Registration successful", response.data);
-    } catch (error) {
-      console.error("Registration failed", error);
-    }
+    const { data } = await axios.post("/register", {
+      fullName,
+      email,
+      password,
+    });
+    setLoggedInEmail(email);
+    setId(data.id);
   }
 
   return (
@@ -28,15 +27,15 @@ export default function Register() {
           value={fullName}
           onChange={(ev) => setFullName(ev.target.value)}
           type="text"
-          placeholder="Full Name"
+          placeholder="Full name"
           className="block w-full  rounded-full p-2 mb-2 border shadow"
         />
 
         <input
           value={email}
           onChange={(ev) => setEmail(ev.target.value)}
-          type="text"
-          placeholder="Email "
+          type="email"
+          placeholder="your@email.com"
           className="block w-full  rounded-full p-2 mb-2 border shadow"
         />
         <input
@@ -49,6 +48,15 @@ export default function Register() {
         <button className="bg-red-500 text-white block w-full rounded-full p-2">
           Submit
         </button>
+        <div className="text-center mt-3">
+          Already a user?{"  "}
+          <a
+            className="bg-red-500 px-3 py-2 text-white cursor-pointer shadow rounded-full"
+            href=""
+          >
+            Login
+          </a>
+        </div>
       </form>
     </div>
   );
